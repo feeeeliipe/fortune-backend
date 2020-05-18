@@ -15,11 +15,15 @@ router.post('/', async (req, res) => {
         if(categoryWithSameName) {
             return res.status(400).send({ error: 'Category already exists with this name.'})
         }
-
-        const category = await Category.create(req.body);
-        return res.status(201).send(category);
+        
+        let category = req.body;
+        // O ID do usuário é repassado para todas as requisições através do middleware de autenticação
+        category.user = req.userId; 
+        const newCategory = await Category.create(category);
+        return res.status(201).send(newCategory);
 
     } catch (error) {
+        console.log(error);
         return res.status(500).send({ error: 'Internal server error.' });
     }
 })
@@ -49,7 +53,8 @@ router.delete('/:id', async (req, res) => {
 // Retorna todas as categorias 
 router.get('/', async (req, res) => {
     try {
-        const categories = await Category.find();
+        const userId = req.userId;
+        const categories = await Category.find( { user: userId });
         return res.send(categories);    
     } catch (error) {
         console.log(error);

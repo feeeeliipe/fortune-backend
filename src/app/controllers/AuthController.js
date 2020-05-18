@@ -21,7 +21,11 @@ router.post('/register', async (req, res) => {
             return res.status(400).send({ error: 'Já existe um usuário com esse endereço de e-mail'});
         }
         const user = await User.create(req.body);
-        return res.send(user);
+        const token = generateJwt(user._id);
+        // Retira a senha do retorno 
+        user.password = undefined;
+        
+        return res.send({user, token});
     } catch (error) {
         return res.status(500).send({ error: 'Erro ao criar usuário' });
     }
