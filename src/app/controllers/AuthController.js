@@ -18,12 +18,12 @@ router.post('/register', async (req, res) => {
         const { email } = req.body;
         const userWithSameEmail = await User.findOne({ email });
         if(userWithSameEmail) {
-            return res.status(400).send({ error: 'User already exists with this e-mail.'});
+            return res.status(400).send({ error: 'Já existe um usuário com esse endereço de e-mail'});
         }
         const user = await User.create(req.body);
         return res.send(user);
     } catch (error) {
-        return res.status(500).send({ error: 'Error creating user.' });
+        return res.status(500).send({ error: 'Erro ao criar usuário' });
     }
 });
 
@@ -31,18 +31,27 @@ router.post('/authenticate', async (req, res) => {
     try {
         const { email, password } = req.body;       
         if(!email)
-            return res.status(400).send({ error: 'E-mail not provided.' });
+            return res.status(400).send({ error: 'E-mail não informado.' });
         if(!password)
-            return res.status(400).send({ error: 'Password not provided.' });
+            return res.status(400).send({ error: 'Senha não informada.' });
         
         // Busca o usuário pelo e-mail informado 
-        const user = await User.findOne({ email }).select('password');
+        const user = await User.findOne({ email }).select('name email password');
+        if(!user) {
+            return res.status(400).send({ error : 'Usuário não encontrado.'});
+        }
+
         // Valida se a senha informada esta correta 
         if(!await bc.compare(password, user.password)) {
-            return res.status(401).send({ error: 'Invalid password.' });
+            return res.status(401).send({ error: 'Senha inválida.' });
         }
+
         // Gera token de autenticação 
         const token = generateJwt(user._id);
+        
+        // Retira a senha do retorno 
+        user.password = undefined;
+        
         return res.send({user, token});
     } catch (error) {
         return res.status(500).send({ error: 'Error on authenticate.' });

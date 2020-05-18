@@ -50,12 +50,23 @@ router.delete('/:id', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const categories = await Category.find();
-        return res.send({categories});    
+        return res.send(categories);    
     } catch (error) {
         console.log(error);
         return res.status(500).send({ error: 'Internal server error.' });
     }
 });
+
+// Retorna categoria por id 
+router.get('/:id', async (req, res) => {
+    try {
+        const category = await Category.findById(req.params.id);
+        return res.send(category);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({ error: 'Internal server error.' });    
+    }
+})
 
 module.exports = app => {
     app.use('/categories', router);
