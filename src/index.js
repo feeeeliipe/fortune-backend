@@ -13,5 +13,6 @@ require('./database/database');
 // Importa os controllers da aplicação 
 require('./app/controllers/AuthController')(app);
 require('./app/controllers/CategoryController')(app);
+require('./app/controllers/EntryController')(app);
 
 app.listen(3001);

@@ -1,7 +1,11 @@
 const mongoose = require('mongoose');
 
 const EntryScheme = new mongoose.Schema({
-    
+    user: {
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'User', 
+        required: true
+    },
     description: {
         type: String, 
         required: true
@@ -15,7 +19,7 @@ const EntryScheme = new mongoose.Schema({
         required: true
     }, 
     amount: {
-        type: number, 
+        type: Number, 
         required: true,
     },
     dueDate: {
