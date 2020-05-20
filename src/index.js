@@ -14,5 +14,6 @@ require('./database/database');
 require('./app/controllers/AuthController')(app);
 require('./app/controllers/CategoryController')(app);
 require('./app/controllers/EntryController')(app);
+require('./app/controllers/GoalController')(app);
 
 app.listen(3001);

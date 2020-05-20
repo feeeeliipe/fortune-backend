@@ -36,7 +36,12 @@ const EntryScheme = new mongoose.Schema({
     category: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category',
-        required: true    
+        required: false    
+    },
+    goal: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Goal', 
+        required: false
     },
     createdAt: {
         type: Date,

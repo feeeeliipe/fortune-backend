@@ -45,8 +45,26 @@ router.delete('/:id', async (req, res) => {
 // Lista todos os lançamentos do usuário
 router.get('/', async(req, res) => {
     try {
-        const userId = req.userId;
-        const entries = await Entry.find( { user : userId} ).populate('category');
+        // Cria o objeto de filtros e adiciona o usuário da requisição
+        let filters = {};
+        filters.user = req.userId;
+
+        // Fitro por data de vencimento 
+        const { dueDate } = req.query;
+        if(dueDate) {
+            dates = dueDate.split(',');
+            // Se tem duas datas no filtro
+            if(dates.length === 2) {
+                filters.dueDate = {};
+                filters.dueDate.$gte = new Date(dates[0]);
+                filters.dueDate.$lte = new Date(new Date(dates[1]).setUTCHours(23, 59, 59));
+            } else {
+                filters.dueDate = {};
+                filters.dueDate.$gte = new Date(dueDate);
+            }
+        }
+        
+        const entries = await Entry.find( filters ).populate('category');
         return res.send(entries);
     } catch (error) {
         console.log(error);
