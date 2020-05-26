@@ -21,7 +21,6 @@ router.post('/', async (req, res) => {
         category.user = req.userId; 
         const newCategory = await Category.create(category);
         return res.status(201).send(newCategory);
-
     } catch (error) {
         console.log(error);
         return res.status(500).send({ error: 'Internal server error.' });
