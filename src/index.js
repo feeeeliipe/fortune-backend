@@ -16,4 +16,6 @@ require('./app/controllers/CategoryController')(app);
 require('./app/controllers/EntryController')(app);
 require('./app/controllers/GoalController')(app);
 
-app.listen(3001);
+app.listen(3001, () => {
+    console.log('Server is running');
+})
