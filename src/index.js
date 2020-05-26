@@ -16,6 +16,7 @@ require('./app/controllers/CategoryController')(app);
 require('./app/controllers/EntryController')(app);
 require('./app/controllers/GoalController')(app);
 
-app.listen(3001, () => {
-    console.log('Server is running');
+const port = process.env.PORT || 3001;
+app.listen(port || 3001, () => {
+    console.log(`Server is running on port: ${port}`);
 })
