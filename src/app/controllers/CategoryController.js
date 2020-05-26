@@ -11,7 +11,7 @@ router.use(authMiddleware);
 router.post('/', async (req, res) => {
     try {
         const { name } = req.body;
-        const categoryWithSameName = await Category.findOne({ name });      
+        const categoryWithSameName = await Category.findOne({ name: name, user: req.userId });      
         if(categoryWithSameName) {
             return res.status(400).send({ error: 'Category already exists with this name.'})
         }
