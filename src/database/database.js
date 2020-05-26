@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 mongoose.connect(
-    'mongodb+srv://system:5p39G4GOYJ0YogrC@fortune-db-njahs.mongodb.net/fortune',
+    process.env.MONGO_URL,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,

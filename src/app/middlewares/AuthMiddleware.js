@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
-const authConfig = require('../../config/auth.json');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 module.exports = (req, res, next) => {
 
@@ -20,7 +22,7 @@ module.exports = (req, res, next) => {
     }
     
     // Verifica se o token é valido 
-    jwt.verify(token, authConfig.secret, (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if(err) {
             return res.status(401).send({ error: 'Invalid token'} );
         }

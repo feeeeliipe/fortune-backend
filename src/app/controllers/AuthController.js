@@ -1,13 +1,13 @@
-
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const bc = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const authConfig = require('../../config/auth.json');
+const dotenv = require('dotenv');
+dotenv.config();
 
 function generateJwt(userId) {
-    const token = jwt.sign({ id: userId }, authConfig.secret, {
+    const token = jwt.sign({ id: userId }, process.env.JWT_SECRET, {
         expiresIn: 14400
     });
     return token;
